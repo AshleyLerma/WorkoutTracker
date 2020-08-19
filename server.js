@@ -45,6 +45,17 @@ app.get("/api/workouts", (req, res) => {
     });
 });
 
+// route to create workout
+app.post("/workouts", (req, res) => {
+  db.Workout.create(req.body)
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
 // route to continue workout
 app.post("/workouts/:id", ({ body }, res) => {
   db.Exercise.create(body)
@@ -55,17 +66,6 @@ app.post("/workouts/:id", ({ body }, res) => {
         { new: true }
       )
     )
-    .then((dbWorkout) => {
-      res.json(dbWorkout);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-});
-
-// route to create workout
-app.post("/workouts", (req, res) => {
-  db.Workout.create(req.body)
     .then((dbWorkout) => {
       res.json(dbWorkout);
     })
