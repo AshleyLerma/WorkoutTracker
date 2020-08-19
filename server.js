@@ -64,15 +64,8 @@ app.post("/workouts/:id", ({ body }, res) => {
 });
 
 // route to create workout
-app.post("/workouts/:id", ({ body }, res) => {
-  db.Exercise.create(body)
-    .then(({ _id }) =>
-      db.Workout.findOneAndUpdate(
-        {},
-        { $push: { exercises: _id } },
-        { new: true }
-      )
-    )
+app.post("/workouts", (req, res) => {
+  db.Workout.create(req.body)
     .then((dbWorkout) => {
       res.json(dbWorkout);
     })
