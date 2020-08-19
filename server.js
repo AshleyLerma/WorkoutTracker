@@ -1,6 +1,7 @@
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const path = require("path");
 
 const PORT = process.env.PORT || 3000;
 
@@ -20,57 +21,74 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/populatedb", {
   useUnifiedTopology: true,
 });
 
-// db.User.create({ name: "Ernest Hemingway" })
-//   .then((dbUser) => {
-//     console.log(dbUser);
-//   })
-//   .catch(({ message }) => {
-//     console.log(message);
-//   });
+// Routes
 
-// app.get("/notes", (req, res) => {
-//   db.Note.find({})
-//     .then((dbNote) => {
-//       res.json(dbNote);
-//     })
-//     .catch((err) => {
-//       res.json(err);
-//     });
-// });
+// route to get / exercise page
+app.get("/exercise", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/exercise.html"));
+});
 
-// app.get("/user", (req, res) => {
-//   db.User.find({})
-//     .then((dbUser) => {
-//       res.json(dbUser);
-//     })
-//     .catch((err) => {
-//       res.json(err);
-//     });
-// });
+// route to get / stats page
+app.get("/stats", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/stats.html"));
+});
 
-// app.post("/submit", ({ body }, res) => {
-//   db.Note.create(body)
-//     .then(({ _id }) =>
-//       db.User.findOneAndUpdate({}, { $push: { notes: _id } }, { new: true })
-//     )
-//     .then((dbUser) => {
-//       res.json(dbUser);
-//     })
-//     .catch((err) => {
-//       res.json(err);
-//     });
-// });
+// API Routes
 
-// app.get("/populateduser", (req, res) => {
-//   db.User.find({})
-//     .populate("notes")
-//     .then((dbUser) => {
-//       res.json(dbUser);
-//     })
-//     .catch((err) => {
-//       res.json(err);
-//     });
-// });
+// route to get workout data
+// TODO: sort?
+app.get("/api/workouts", (req, res) => {
+  db.Workout.find({})
+    .populate("exercises")
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+// route to create workout
+app.post("/api/workouts", (req, res) => {
+  db.Workout.create(req.body)
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+// route to continue workout
+app.post("/api/workouts/" + id, ({ body }, res) => {
+  db.Exercise.create(body)
+    .then(({ _id }) =>
+      db.Workout.findOneAndUpdate(
+        {},
+        { $push: { exercises: _id } },
+        { new: true }
+      )
+    )
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+// route to get stats
+// TODO: sort?
+app.get("/api/workouts/range", (req, res) => {
+  db.Workout.find({})
+    .populate("exercises")
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
