@@ -46,7 +46,7 @@ app.get("/api/workouts", (req, res) => {
 });
 
 // route to create workout
-app.post("/workouts", (req, res) => {
+app.post("/api/workouts", (req, res) => {
   db.Workout.create(req.body)
     .then((dbWorkout) => {
       res.json(dbWorkout);
@@ -57,7 +57,7 @@ app.post("/workouts", (req, res) => {
 });
 
 // route to continue workout
-app.post("/workouts/:id", ({ body }, res) => {
+app.post("/api/workouts/:id", ({ body }, res) => {
   db.Exercise.create(body)
     .then(({ _id }) =>
       db.Workout.findOneAndUpdate(
