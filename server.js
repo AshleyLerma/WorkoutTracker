@@ -1,6 +1,7 @@
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const path = require("path");
 
 const PORT = process.env.PORT || 3000;
 
@@ -32,9 +33,10 @@ app.get("/stats", (req, res) => {
 });
 
 // route to get workout data
-// TODO: populate with exercise? and sort?
+// TODO: sort?
 app.get("/api/workouts", (req, res) => {
   db.Workout.find({})
+    .populate("exercises")
     .then((dbWorkout) => {
       res.json(dbWorkout);
     })
