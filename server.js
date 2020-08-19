@@ -45,6 +45,42 @@ app.get("/api/workouts", (req, res) => {
     });
 });
 
+// route to continue workout
+app.post("/workouts/:id", ({ body }, res) => {
+  db.Exercise.create(body)
+    .then(({ _id }) =>
+      db.Workout.findOneAndUpdate(
+        {},
+        { $push: { exercises: _id } },
+        { new: true }
+      )
+    )
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+// route to create workout
+app.post("/workouts/:id", ({ body }, res) => {
+  db.Exercise.create(body)
+    .then(({ _id }) =>
+      db.Workout.findOneAndUpdate(
+        {},
+        { $push: { exercises: _id } },
+        { new: true }
+      )
+    )
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
 // db.User.create({ name: "Ernest Hemingway" })
 //   .then((dbUser) => {
 //     console.log(dbUser);
@@ -55,19 +91,6 @@ app.get("/api/workouts", (req, res) => {
 
 // app.get("/user", (req, res) => {
 //   db.User.find({})
-//     .then((dbUser) => {
-//       res.json(dbUser);
-//     })
-//     .catch((err) => {
-//       res.json(err);
-//     });
-// });
-
-// app.post("/submit", ({ body }, res) => {
-//   db.Note.create(body)
-//     .then(({ _id }) =>
-//       db.User.findOneAndUpdate({}, { $push: { notes: _id } }, { new: true })
-//     )
 //     .then((dbUser) => {
 //       res.json(dbUser);
 //     })
