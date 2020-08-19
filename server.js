@@ -49,7 +49,7 @@ app.get("/api/workouts", (req, res) => {
 });
 
 // route to create workout
-app.post("/api/workouts", (req, res) => {
+app.put("/api/workouts", (req, res) => {
   db.Workout.create(req.body)
     .then((dbWorkout) => {
       res.json(dbWorkout);
