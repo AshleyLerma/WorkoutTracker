@@ -26,9 +26,21 @@ app.get("/exercise", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/exercise.html"));
 });
 
-// route to get / stats
+// route to get / stats page
 app.get("/stats", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/stats.html"));
+});
+
+// route to get workout data
+// TODO: populate with exercise? and sort?
+app.get("/api/workouts", (req, res) => {
+  db.Workout.find({})
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
 // db.User.create({ name: "Ernest Hemingway" })
@@ -38,16 +50,6 @@ app.get("/stats", (req, res) => {
 //   .catch(({ message }) => {
 //     console.log(message);
 //   });
-
-// app.get("/notes", (req, res) => {
-//   db.Note.find({})
-//     .then((dbNote) => {
-//       res.json(dbNote);
-//     })
-//     .catch((err) => {
-//       res.json(err);
-//     });
-// });
 
 // app.get("/user", (req, res) => {
 //   db.User.find({})
