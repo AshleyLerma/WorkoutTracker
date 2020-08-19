@@ -21,7 +21,8 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/populatedb", {
   useUnifiedTopology: true,
 });
 
-// routes
+// Routes
+
 // route to get / exercise page
 app.get("/exercise", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/exercise.html"));
@@ -31,6 +32,8 @@ app.get("/exercise", (req, res) => {
 app.get("/stats", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/stats.html"));
 });
+
+// API Routes
 
 // route to get workout data
 // TODO: sort?
@@ -74,34 +77,17 @@ app.post("/api/workouts/:id", ({ body }, res) => {
     });
 });
 
-// db.User.create({ name: "Ernest Hemingway" })
-//   .then((dbUser) => {
-//     console.log(dbUser);
-//   })
-//   .catch(({ message }) => {
-//     console.log(message);
-//   });
-
-// app.get("/user", (req, res) => {
-//   db.User.find({})
-//     .then((dbUser) => {
-//       res.json(dbUser);
-//     })
-//     .catch((err) => {
-//       res.json(err);
-//     });
-// });
-
-// app.get("/populateduser", (req, res) => {
-//   db.User.find({})
-//     .populate("notes")
-//     .then((dbUser) => {
-//       res.json(dbUser);
-//     })
-//     .catch((err) => {
-//       res.json(err);
-//     });
-// });
+// route to get stats
+app.get("/api/workouts/range", (req, res) => {
+  db.Workout.find({})
+    .populate("exercises")
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
