@@ -60,7 +60,7 @@ app.post("/api/workouts", (req, res) => {
 });
 
 // route to continue workout
-app.post("/api/workouts/:id", ({ body }, res) => {
+app.post("/api/workouts/" + id, ({ body }, res) => {
   db.Exercise.create(body)
     .then(({ _id }) =>
       db.Workout.findOneAndUpdate(
@@ -78,6 +78,7 @@ app.post("/api/workouts/:id", ({ body }, res) => {
 });
 
 // route to get stats
+// TODO: sort?
 app.get("/api/workouts/range", (req, res) => {
   db.Workout.find({})
     .populate("exercises")
