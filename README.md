@@ -2,7 +2,7 @@
 
 Workout tracker using a Mongo database with a Mongoose schema that handle routes with Express.
 
-See it in action HERE.
+See it in action [HERE](https://stay-fit-workout-tracker.herokuapp.com/).
 
 ## User Story
 
